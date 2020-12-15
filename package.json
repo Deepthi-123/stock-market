@@ -38,6 +38,8 @@
     "@types/node": "10.1.4",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
+    "tslint-angular": "^3.0.2",
+    "tslint-config-prettier": "^1.18.0",
     "codelyzer": "~4.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
