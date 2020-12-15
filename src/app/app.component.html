@@ -17,7 +17,7 @@
   <div class="left-column">
     <ng-container *ngFor="let item of stocksList; let i; of: stocksList.length">
       <button class="stocks-list" (click)="onStockSelection(item)">
-        {{ item }}</button
+        {{ item.name }}</button
       ><br />
     </ng-container>
   </div>
