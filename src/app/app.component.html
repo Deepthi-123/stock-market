@@ -1,55 +1,49 @@
-<div class="card"><h3>NSE Stocks Update</h3>
-<br>
+<div class="card">
+  <h3>NSE Stocks Update</h3>
+  <br />
   <p>
-  NSE Stocks &nbsp;&nbsp;
-  <input type="text" placeholder="Search by name..." />
-</p>
-
+    NSE Stocks &nbsp;&nbsp;
+    <input type="text" placeholder="Search by name..." />
+  </p>
 </div>
 <div class="analytics">
-<h4>Weekly Analytics</h4>
+  <h4>Weekly Analytics</h4>
 
-<!-- <p>{{data | json}}</p> -->
+  <!-- <p>{{data | json}}</p> -->
 
-<p>Click selection to view detailed weekly analytics</p>
+  <p>Click selection to view detailed weekly analytics</p>
 </div>
 <div class="container">
   <div class="left-column">
-<ng-container *ngFor="let item of stocksList; let i; of: stocksList.length">
-  <button class="stocks-list" (click)="onStockSelection(item)">{{ item }}</button><br />
-</ng-container>
-</div>
+    <ng-container *ngFor="let item of stocksList; let i; of: stocksList.length">
+      <button class="stocks-list" (click)="onStockSelection(item)">
+        {{ item }}</button
+      ><br />
+    </ng-container>
+  </div>
 
   <div class="right-column">
-<div style="display: block">
-  <canvas
-    baseChart
-    height="120"
-    [datasets]="stockCharts"
-    [labels]="lineChartLabels"
-    [options]="{
-      bezierCurve : false
-  }"
-    [colors]="lineChartColors"
-    [legend]="lineChartLegend"
-    [chartType]="lineChartType"
-    [plugins]="lineChartPlugins"
-  ></canvas>
+    <stock-line-chart
+      [lineChartData]="stockCharts"
+      [lineChartLabels]="lineChartLabels"
+      [lineChartLegend]="lineChartLegend"
+      [lineChartType]="lineChartType"
+      [lineChartColors]="lineChartColors"
+      [lineChartPlugins]="lineChartPlugins"
+    ></stock-line-chart>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Stock Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of weekDates">
+          <td>{{ item.date }}</td>
+          <td>{{ item.stockValue }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Stock Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of weekDates">
-      <td>{{item.date}}</td>
-      <td>{{item.stockValue}}</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-

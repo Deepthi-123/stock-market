@@ -1,3 +1,15 @@
-<p>
-  line-chart works!
-</p>
+<div style="display: block">
+  <canvas
+    baseChart
+    height="120"
+    [datasets]="lineChartData"
+    [labels]="lineChartLabels"
+    [options]="{
+      bezierCurve : false
+  }"
+    [colors]="lineChartColors"
+    [legend]="lineChartLegend"
+    [chartType]="lineChartType"
+    [plugins]="lineChartPlugins"
+  ></canvas>
+</div>
