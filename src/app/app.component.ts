@@ -1,48 +1,50 @@
-import { Component, VERSION } from "@angular/core";
 // import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { HttpClient } from "@angular/common/http";
-import * as moment from "moment";
-import { ChartDataSets, ChartOptions } from "chart.js";
-import { Color, Label } from "ng2-charts";
+import { HttpClient } from '@angular/common/http';
+import { Component, VERSION } from '@angular/core';
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import * as moment from 'moment';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
-  selector: "my-app",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  // name = "Angular 5";
-  name = "Angular " + VERSION.major;
+
+  constructor(private http: HttpClient) {}
+  // name = 'Angular 5';
+  name = 'Angular ' + VERSION.major;
   stockSelected = false;
-  currentSelection = "";
+  currentSelection = '';
   stockData: String[];
   data: string;
   weeklyData: number[] = [];
   weekDates: { date: string; stockValue: string }[] = [];
-  public lineChartData: ChartDataSets[] = [{ data: [], label: "" }];
-  public stockCharts: ChartDataSets[] = [{ data: [], label: "" }];
+  public lineChartData: ChartDataSets[] = [{ data: [], label: '' }];
+  public stockCharts: ChartDataSets[] = [{ data: [], label: '' }];
   public lineChartLabels: Label[] = [];
   public lineChartColors: Color[] = [
     {
-      borderColor: "black",
-      backgroundColor: "rgba(204, 204, 255, 0.3)",
+      borderColor: 'black',
+      backgroundColor: 'rgba(204, 204, 255, 0.3)',
     },
   ];
   public lineChartLegend = true;
-  public lineChartType = "line";
+  public lineChartType = 'line';
   public lineChartPlugins = [];
 
   stocksList: string[] = [
-    "Biocon",
-    "item1",
-    "item1",
-    "item1",
-    "item1",
-    "item1",
-    "item1",
+    'Biocon',
+    'item1',
+    'item1',
+    'item1',
+    'item1',
+    'item1',
+    'item1',
   ];
 
-  constructor(private http: HttpClient) {}
+  configUrl = '';
   ngOnInit(): void {}
 
   onStockSelection(type: string) {
@@ -73,7 +75,7 @@ export class AppComponent {
       //  console.log(this.lineChartData);
     } else {
       this.displayWeeklyUpdates().then((result) => {
-        this.data = result["Time Series (Daily)"];
+        this.data = result['Time Series (Daily)'];
         this.IsStockSelected();
         this.weekDates.map((entry) =>
           this.weeklyData.push(Number(entry.stockValue))
@@ -88,20 +90,18 @@ export class AppComponent {
     // console.log(this.stockCharts[0]);
   }
 
-  configUrl = "";
-
   displayWeeklyUpdates() {
-    const today = moment().format("YYYY-MM-DD");
-    const aWeekBefore = moment().subtract(1, "week").format("YYYY-MM-DD");
+    const today = moment().format('YYYY-MM-DD');
+    const aWeekBefore = moment().subtract(1, 'week').format('YYYY-MM-DD');
     // console.log(aWeekBefore);
     return this.http.get(this.configUrl).toPromise();
   }
 
   getStockUrl(urlFragment: string): void {
     this.configUrl =
-      "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=BSE:" +
+      'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=BSE:' +
       urlFragment +
-      "&apikey=8RQQ07SRZ6NXQUV8&datatype=json";
+      '&apikey=8RQQ07SRZ6NXQUV8&datatype=json';
   }
 
   IsStockSelected() {
@@ -109,16 +109,16 @@ export class AppComponent {
     this.weekDates = [];
     this.weeklyData = [];
     for (let i = 1; i <= 7; i++) {
-      const dateOfWeek = moment().subtract(i, "d").format("YYYY-MM-DD");
-      let validStockVal = "";
+      const dateOfWeek = moment().subtract(i, 'd').format('YYYY-MM-DD');
+      let validStockVal = '';
       if (
         this.data === undefined ||
         this.data[dateOfWeek] === undefined ||
-        this.data[dateOfWeek]["4. close"] === undefined
+        this.data[dateOfWeek]['4. close'] === undefined
       ) {
-        validStockVal = "";
+        validStockVal = '';
       } else {
-        validStockVal = this.data[dateOfWeek]["4. close"];
+        validStockVal = this.data[dateOfWeek]['4. close'];
       }
       this.weekDates.push({
         date: dateOfWeek,
