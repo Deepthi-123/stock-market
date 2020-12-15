@@ -8,15 +8,15 @@ import { Component, Input, OnInit } from '@angular/core';
 export class LineChartComponent implements OnInit {
 
 
-  @Input() lineChartData;
-  @Input() lineChartLabels;
-  @Input() lineChartColors;
-  @Input() lineChartLegend;
-  @Input() lineChartType;
-  @Input() lineChartPlugins;
+  @Input() public lineChartData;
+  @Input() public lineChartLabels;
+  @Input() public lineChartColors;
+  @Input() public lineChartLegend;
+  @Input() public lineChartType;
+  @Input() public lineChartPlugins;
   constructor() { }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
 }

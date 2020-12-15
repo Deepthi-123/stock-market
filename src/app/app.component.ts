@@ -14,13 +14,13 @@ export class AppComponent {
 
   constructor(private http: HttpClient) {}
   // name = 'Angular 5';
-  name = 'Angular ' + VERSION.major;
-  stockSelected = false;
-  currentSelection = '';
-  stockData: String[];
-  data: string;
-  weeklyData: number[] = [];
-  weekDates: { date: string; stockValue: string }[] = [];
+  public name = 'Angular ' + VERSION.major;
+  public stockSelected = false;
+  public currentSelection = '';
+  public stockData: String[];
+  public data: string;
+  public weeklyData: number[] = [];
+  public weekDates: { date: string; stockValue: string }[] = [];
   public lineChartData: ChartDataSets[] = [{ data: [], label: '' }];
   public stockCharts: ChartDataSets[] = [{ data: [], label: '' }];
   public lineChartLabels: Label[] = [];
@@ -34,7 +34,7 @@ export class AppComponent {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  stocksList: string[] = [
+  public stocksList: string[] = [
     'Biocon',
     'item1',
     'item1',
@@ -44,10 +44,10 @@ export class AppComponent {
     'item1',
   ];
 
-  configUrl = '';
+  public configUrl = '';
   ngOnInit(): void {}
 
-  onStockSelection(type: string) {
+  public onStockSelection(type: string) {
     // this.lineChartData[0].data = [];
     // this.lineChartData[0].label = type;
     this.lineChartLabels = [];
@@ -90,25 +90,25 @@ export class AppComponent {
     // console.log(this.stockCharts[0]);
   }
 
-  displayWeeklyUpdates() {
+  public displayWeeklyUpdates() {
     const today = moment().format('YYYY-MM-DD');
     const aWeekBefore = moment().subtract(1, 'week').format('YYYY-MM-DD');
     // console.log(aWeekBefore);
     return this.http.get(this.configUrl).toPromise();
   }
 
-  getStockUrl(urlFragment: string): void {
+  public getStockUrl(urlFragment: string): void {
     this.configUrl =
       'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=BSE:' +
       urlFragment +
       '&apikey=8RQQ07SRZ6NXQUV8&datatype=json';
   }
 
-  IsStockSelected() {
+  public IsStockSelected() {
     // console.log(this.configUrl);
     this.weekDates = [];
     this.weeklyData = [];
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 7; i >= 0; i--) {
       const dateOfWeek = moment().subtract(i, 'd').format('YYYY-MM-DD');
       let validStockVal = '';
       if (
@@ -120,15 +120,19 @@ export class AppComponent {
       } else {
         validStockVal = this.data[dateOfWeek]['4. close'];
       }
+      if (new Date(dateOfWeek).getDay() === 6 || new Date(dateOfWeek).getDay() === 0) {
+        console.log('is weekend: ' + dateOfWeek);
+      } else {
       this.weekDates.push({
         date: dateOfWeek,
         stockValue: validStockVal,
       });
     }
+    }
     // console.log(this.weekDates);
   }
 
-  isButtonSelected(): void {
+  public isButtonSelected(): void {
     this.stockSelected = !this.stockSelected;
     // console.log(document.activeElement.innerHTML.toLocaleUpperCase());
   }
