@@ -1,0 +1,14 @@
+.card-box {
+    background-color: #e6e6ff;
+    width: 70px;
+    height: 70px;
+    margin: 10px;
+    border-radius: 2px;
+    transition: 0.5s;
+  }
+
+.card-box:hover {
+    width: 85px;
+    height: 85px;
+    transition-timing-function: linear;
+}

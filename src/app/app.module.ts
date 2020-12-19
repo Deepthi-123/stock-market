@@ -8,15 +8,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { TableDataComponent } from './table-data/table-data.component';
+import { CardBoxComponent } from './card-box/card-box.component';
 
 @NgModule({
   imports:      [ BrowserModule, FormsModule, HttpClientModule, ChartsModule ],
-  declarations: [		 
+  declarations: [			 
     AppComponent,
     DirectiveTut,
     AttributeDirectiveTut,
       LineChartComponent,
-      TableDataComponent
+      TableDataComponent,
+      CardBoxComponent
    ],
   bootstrap:    [ AppComponent ],
   providers: [ ]
