@@ -5,25 +5,38 @@ import { ChartDataSets, ChartOptions } from 'chart.js';
 import * as moment from 'moment';
 import { Color, Label } from 'ng2-charts';
 
+const DAILY_DATA = 'TIME_SERIES_DAILY';
+const GLOBAL_QUOTE = 'GLOBAL_QUOTE';
+
 @Component({
-  selector: 'my-app',
+  selector: "my-app",
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-
   constructor(private http: HttpClient) {}
   // name = 'Angular 5';
   public name = 'Angular ' + VERSION.major;
   public stockSelected = false;
   public currentSelection = '';
-  public stockData: String[];
+  public stockData: string[];
   public data: string;
   public weeklyData: number[] = [];
   public weekDates: { date: string; stockValue: string }[] = [];
   public lineChartData: ChartDataSets[] = [{ data: [], label: '' }];
   public stockCharts: ChartDataSets[] = [{ data: [], label: '' }];
   public lineChartLabels: Label[] = [];
+  public searchText = '';
+  public globalQuote: {
+    Previous_Close: string;
+    Change: string;
+    Change_Percent: string;
+    Open: string;
+    High: string;
+    Low: string;
+    Price: string;
+    Volume: string;
+  };
   public lineChartColors: Color[] = [
     {
       borderColor: 'black',
@@ -34,42 +47,53 @@ export class AppComponent {
   public lineChartType = 'line';
   public lineChartPlugins = [];
 
-  public stocksList: {name: string; code: string}[] = [
-    {name: 'Biocon', code: 'BIOCON'},
-    {name: 'Canara Bank', code: 'CANBK'},
-    {name: 'Ashok Leyland', code: '500477'},
-    {name: 'Tata Steel', code: 'TATASTEEL'},
-    {name: 'Glenmark Pharmaceuticals', code: '532296'},
-    {name: 'HDFC Life', code: '540777'},
-    
+  public stocksList: { name: string; code: string }[] = [
+    { name: 'Biocon', code: 'BIOCON' },
+    { name: 'Canara Bank', code: 'CANBK' },
+    { name: 'Ashok Leyland', code: '500477' },
+    { name: 'Tata Steel', code: 'TATASTEEL' },
+    { name: 'Glenmark Pharmaceuticals', code: '532296' },
+    { name: 'HDFC Life', code: '540777' },
   ];
 
   public configUrl = '';
   ngOnInit(): void {}
 
-  public onStockSelection(type: {name: string; code: string}) {
+  public onSearch() {
+    if (this.searchText) {
+      this.getStockUrl(GLOBAL_QUOTE, this.searchText);
+      this.displayGlobalQuotes().then((result) => console.log(result));
+    }
+  }
+
+  public onStockSelection(type: { name: string; code: string }) {
     // this.lineChartData[0].data = [];
     // this.lineChartData[0].label = type;
     this.lineChartLabels = [];
     this.stockCharts[0].data = [];
-    this.getStockUrl(type.code);
+    this.getStockUrl(DAILY_DATA, type.code);
     if (
       document.activeElement &&
       document.activeElement instanceof HTMLButtonElement
     ) {
       document.activeElement.blur();
     }
-    if (this.lineChartData.filter((entry) => entry.label === type.name).length > 0) {
+    if (
+      this.lineChartData.filter((entry) => entry.label === type.name).length > 0
+    ) {
       this.weekDates.map((entry) => this.lineChartLabels.push(entry.date));
       // this.weekDates.map((x, i) => {return {'stockValue': this.stockCharts[0].data[i]}});
       this.stockCharts[0].data = this.lineChartData.find(
         (entry) => entry.label === type.name
       ).data;
-      
+
       this.stockCharts[0].label = this.lineChartData.find(
         (entry) => entry.label === type.name
       ).label;
-      this.weekDates.map((entry, i) => entry.stockValue = this.stockCharts[0].data[i].toString());
+      this.weekDates.map(
+        (entry, i) =>
+          (entry.stockValue = this.stockCharts[0].data[i].toString())
+      );
       console.log(this.weekDates);
 
       //  console.log(this.lineChartData);
@@ -90,6 +114,10 @@ export class AppComponent {
     // console.log(this.stockCharts[0]);
   }
 
+  public displayGlobalQuotes() {
+    return this.http.get(this.configUrl).toPromise();
+  }
+
   public displayWeeklyUpdates() {
     const today = moment().format('YYYY-MM-DD');
     const aWeekBefore = moment().subtract(1, 'week').format('YYYY-MM-DD');
@@ -97,9 +125,11 @@ export class AppComponent {
     return this.http.get(this.configUrl).toPromise();
   }
 
-  public getStockUrl(urlFragment: string): void {
+  public getStockUrl(func: string, urlFragment: string): void {
     this.configUrl =
-      'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=BSE:' +
+      'https://www.alphavantage.co/query?function=' +
+      func +
+      '&symbol=BSE:' +
       urlFragment +
       '&apikey=8RQQ07SRZ6NXQUV8&datatype=json';
   }
@@ -120,14 +150,17 @@ export class AppComponent {
       } else {
         validStockVal = this.data[dateOfWeek]['4. close'];
       }
-      if (new Date(dateOfWeek).getDay() === 6 || new Date(dateOfWeek).getDay() === 0) {
+      if (
+        new Date(dateOfWeek).getDay() === 6 ||
+        new Date(dateOfWeek).getDay() === 0
+      ) {
         console.log('is weekend: ' + dateOfWeek);
       } else {
-      this.weekDates.push({
-        date: dateOfWeek,
-        stockValue: validStockVal,
-      });
-    }
+        this.weekDates.push({
+          date: dateOfWeek,
+          stockValue: validStockVal,
+        });
+      }
     }
     // console.log(this.weekDates);
   }

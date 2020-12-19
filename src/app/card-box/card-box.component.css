@@ -5,10 +5,20 @@
     margin: 10px;
     border-radius: 2px;
     transition: 0.5s;
+    display: flex;
+    flex-direction: column;
   }
 
 .card-box:hover {
     width: 85px;
     height: 85px;
     transition-timing-function: linear;
+}
+
+.inner-header {
+    font-size: larger;
+}
+
+.inner-content {
+    font-size: medium;
 }

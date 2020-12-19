@@ -4,7 +4,8 @@
   <div style="display: inline-flex;">
   <p>
     NSE Stocks &nbsp;&nbsp;
-    <input type="text" placeholder="Search by name..." />
+    <input type="text" placeholder="Search by name..." [(ngModel)]="searchText" /> &nbsp;&nbsp;
+    <button style="width: 20px; height: 20px;" (click)="onSearch()"></button>
   </p>
   <div class="box-holder">
     <stock-card-box></stock-card-box>
