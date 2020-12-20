@@ -4,6 +4,7 @@ import { Component, VERSION } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import * as moment from 'moment';
 import { Color, Label } from 'ng2-charts';
+import { IQuoteModel } from './models/quote.model';
 
 const DAILY_DATA = 'TIME_SERIES_DAILY';
 const GLOBAL_QUOTE = 'GLOBAL_QUOTE';
@@ -27,21 +28,24 @@ export class AppComponent {
   public stockCharts: ChartDataSets[] = [{ data: [], label: '' }];
   public lineChartLabels: Label[] = [];
   public searchText = '';
-  public globalQuote: {
-    Previous_Close: string;
-    Change: string;
-    Change_Percent: string;
-    Open: string;
-    High: string;
-    Low: string;
-    Price: string;
-    Volume: string;
-  };
+  public globalQuote: any;
   public lineChartColors: Color[] = [
     {
       borderColor: 'black',
       backgroundColor: 'rgba(204, 204, 255, 0.3)',
     },
+  ];
+  public quoteList = [
+    'Symbol',
+    'Open (Rs)',
+    'High (Rs)',
+    'Low (Rs)',
+    'Price (Rs)',
+    'Volume',
+    'Latest Trading Day',
+    'Previous Close (Rs)',
+    'Change (Rs)',
+    'Change Percent',
   ];
   public lineChartLegend = true;
   public lineChartType = 'line';
@@ -60,9 +64,11 @@ export class AppComponent {
   ngOnInit(): void {}
 
   public onSearch() {
-    if (this.searchText) {
+    if (this.searchText !== '') {
       this.getStockUrl(GLOBAL_QUOTE, this.searchText);
-      this.displayGlobalQuotes().then((result) => console.log(result));
+      this.displayGlobalQuotes().then((result) => {
+        this.globalQuote = result['Global Quote'];
+      });
     }
   }
 

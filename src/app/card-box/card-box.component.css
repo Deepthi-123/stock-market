@@ -1,24 +1,28 @@
 .card-box {
     background-color: #e6e6ff;
-    width: 70px;
-    height: 70px;
+    width: fit-content;
+    height: fit-content;
     margin: 10px;
     border-radius: 2px;
-    transition: 0.5s;
+    transition: 1s;
+    padding: 5px;
+    border-radius: 3px;
     display: flex;
     flex-direction: column;
+    transition-timing-function: var(--transition-type);
   }
 
-.card-box:hover {
-    width: 85px;
+/* .card-box:hover {
     height: 85px;
     transition-timing-function: linear;
-}
+} */
 
 .inner-header {
-    font-size: larger;
+    font-size: 10pt;
 }
 
 .inner-content {
-    font-size: medium;
+    font-size: 10pt;
+    padding: 5px;
+    font-style: italic;
 }

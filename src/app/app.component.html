@@ -8,9 +8,9 @@
     <button style="width: 20px; height: 20px;" (click)="onSearch()"></button>
   </p>
   <div class="box-holder">
-    <stock-card-box></stock-card-box>
-    <stock-card-box></stock-card-box>
-    <stock-card-box></stock-card-box>
+    <ng-container *ngFor="let item of globalQuote | keyvalue;">
+    <stock-card-box [text]="item"></stock-card-box>
+  </ng-container>
     </div>
   </div>
 </div>
