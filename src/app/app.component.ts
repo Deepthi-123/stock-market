@@ -35,18 +35,19 @@ export class AppComponent {
       backgroundColor: 'rgba(204, 204, 255, 0.3)',
     },
   ];
-  public quoteList = [
-    'Symbol',
-    'Open (Rs)',
-    'High (Rs)',
-    'Low (Rs)',
-    'Price (Rs)',
-    'Volume',
-    'Latest Trading Day',
-    'Previous Close (Rs)',
-    'Change (Rs)',
-    'Change Percent',
-  ];
+  public quoteList = {
+    Symbol: '',
+    // tslint:disable-next-line: object-literal-sort-keys
+    'Open (Rs)': '',
+    'High (Rs)': '',
+    'Low (Rs)': '',
+    'Price (Rs)': '',
+    Volume: '',
+    'Latest Trading Day': '',
+    'Previous Close (Rs)': '',
+    'Change (Rs)': '',
+    'Change Percent': '',
+  };
   public lineChartLegend = true;
   public lineChartType = 'line';
   public lineChartPlugins = [];
@@ -67,14 +68,13 @@ export class AppComponent {
     if (this.searchText !== '') {
       this.getStockUrl(GLOBAL_QUOTE, this.searchText);
       this.displayGlobalQuotes().then((result) => {
-        this.globalQuote = result['Global Quote'];
+        const sub = result['Global Quote'];
+        Object.entries(this.quoteList).forEach(([key, _], i) => this.quoteList[key] = (sub[Object.keys(sub)[i]]));
       });
     }
   }
 
   public onStockSelection(type: { name: string; code: string }) {
-    // this.lineChartData[0].data = [];
-    // this.lineChartData[0].label = type;
     this.lineChartLabels = [];
     this.stockCharts[0].data = [];
     this.getStockUrl(DAILY_DATA, type.code);

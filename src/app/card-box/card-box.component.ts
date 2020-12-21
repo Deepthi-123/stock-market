@@ -11,6 +11,7 @@ export class CardBoxComponent implements OnInit {
   constructor(private elRef: ElementRef) {}
 
   @Input() public text: any;
+  // @Input() public header: string;
   public ngOnInit() {
   }
 

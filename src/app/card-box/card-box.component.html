@@ -1,5 +1,5 @@
 <div class="card-box" (mouseenter)="mouseenter()" (mouseleave)="mouseleave()">
-  <div class="inner-header">{{text.key | uppercase | slice: 3 }}</div>
+  <div class="inner-header">{{text.key | uppercase}}</div>
   <i *ngIf="!isHovered" style="position: relative; left: 42%;" class="fa fw fa-caret-down"></i>
-  <div *ngIf="isHovered" class="inner-content">{{text.value}}</div>
+  <div *ngIf="isHovered" class="inner-content">{{text.value ? text.value : ''}}</div>
 </div>
